@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.UserTable>
+@{
+    ViewBag.Title = "Edit a User";
+}
+
+@*this page displays a list of all users and allows to choose one user to update*@
+
+<style>
+        .Images{
+        height:200px;
+        width:200px;
+        }
+        #UserList{
+            list-style-type:none;
+        }
+</style>
+
+<h2>Edit a User</h2>
+
+@Html.ValidationSummary(true, "an Error has occured:", new { @class = "text-danger" }); @*any errors occured will be displayed here*@
+<ol id="UserList">
+    @foreach (Vehicle_Selling_Site.Models.UserTable item in Model) //load each user sent from the controller and display its parameters
+    {
+        <li>
+            <form method="post">
+                <img src="@item.Photo" class="Images" /> <br />
+                <label>Name:</label> @item.Name <br />
+                <label>UserName:</label> @item.UserName <br />
+                <label>Password:</label> @item.Password <br />
+                <label>Email:</label> @item.Email <br />
+                <label>Date of Birth:</label> @item.DateofBirth <br />
+                <label>Gender:</label> @item.Gender <br />
+                <label>User Type:</label> @item.Type <br />
+                <input type="hidden" name="SelectedName" value="@item.UserName" />@*used to send the user's UserName to the controller upon submition*@
+                <input type="hidden" name="AdminName" id="LoggedInAdmin" /> @*used to send the logged in Admin's UserName to the controller*@
+                <input type="submit" class="btn btn-default" value="Update" />
+                <hr />
+            </form>
+        </li>
+    }
+</ol>
+<script>
+    var GetAdminName=localStorage.getItem("LoggedInUser"); //get the logged in admin's username from the local storage
+    jQuery("input[name='AdminName']").val(GetAdminName); //set the admin's username as the "hidden" input's value
+</script>

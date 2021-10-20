@@ -1,0 +1,24 @@
+﻿@model Vehicle_Selling_Site.Models.VehicleTypeTable
+@{
+    ViewBag.Title = "Update a Vehicle Type";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+<div data-role="page">
+    @*vehicle types can be edited using this page*@
+
+    <h2>Edit a Vehicle Type</h2>
+    <div data-role="content">
+        <label>Selected Type:</label> @Model.VehicleType @*<----- the selected vehicle type*@
+        <hr />
+        @using (Html.BeginForm("EditVehicleType", "Manage", FormMethod.Post))
+        {
+            @Html.ValidationSummary(true, "an Error has occured:", new { @class = "text-danger" }); //any errors occured will be displayed here
+            <input type="hidden" value="@Model.VehicleType" name="ChosenType" /> //the vehicle type's previous name will be saved in this object to allow changing it in the database
+            //************************* a label and a textbox to write the vehicle type's new name:
+            @Html.LabelFor(model => model.VehicleType, "New name for this Vehicle Type") <br />
+            @Html.TextBoxFor(model => model.VehicleType, new { required = true }) <br />
+            <span>Note: upon updating a vehicle type, all vehicles of the same type will also be updated</span>
+            <input type="submit" class="ui-btn" value="Update" />
+        }
+    </div>
+</div>

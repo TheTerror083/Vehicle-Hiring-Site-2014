@@ -1,0 +1,25 @@
+﻿@model Vehicle_Selling_Site.Models.ContactTable
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+<div data-role="page">
+    <div data-role="content">
+        <h2>Contact Us</h2>
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                Subject: <br />
+                @******************a textbox for the subject:*@
+                @Html.TextBoxFor(model => model.Subject, new { name = "Subject", style = "width:400px;" })
+                <hr />
+                Message: <br />
+                @***********************a textarea for the message:*@
+                @Html.TextAreaFor(model => model.Message, new { name = "Message", style = "width:400px; height:300px;" })
+                <br />
+                <br />
+            </div>
+            <input type="submit" class="ui-btn" value="Send" />
+        }
+    </div>
+</div>

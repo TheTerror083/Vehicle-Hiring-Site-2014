@@ -1,0 +1,34 @@
+﻿@model Vehicle_Selling_Site.Models.UserTable
+@{
+    Layout = null;
+}
+
+ @*after logging in, the user will be redirected to this page*@
+<style>
+    #LoggedInName{
+        visibility:hidden;
+    }
+</style>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thank You for Logging In</title>
+
+</head>
+<body>
+    <h2>Thank You for Logging In, Redirecting to Home Page...</h2>
+    <span id="LoggedInName"> @* an invisible span, used to read the UserName from inside it (see below) *@
+        Logged in as <span id="UserSpan">@Model.UserName</span>
+    </span>
+    <script>
+        var user = document.getElementById("UserSpan").innerHTML; // get the user's UserName and write it down in the invisible span
+        localStorage.setItem("LoggedInUser", user); //add the user's UserName to localStorage
+        //redirect the user to the Home Controller's default page i.e the HomePage after 2 seconds:
+        setTimeout(function () {
+            window.location.href = "/Home"
+        }, 2000); 
+    </script>
+</body>
+</html>

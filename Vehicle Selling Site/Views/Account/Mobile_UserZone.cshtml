@@ -1,0 +1,34 @@
+﻿@model Vehicle_Selling_Site.Models.UserTable
+@{
+    ViewBag.Title = "Personal Zone";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+<div data-role="page">
+    <div data-role="content">
+        @* the user's personal zone, includes some of the user's personal details *@
+        <h2>Personal Zone</h2>
+        <hr />
+        <h1>@Model.UserName</h1> @*the user's UserName*@
+        <hr />
+        @if (Model.Photo.Length > 1) // if the user has a picture attached to this profile
+        {
+            <img src="@Model.Photo" style="width:200px; height:200px" /> <br /> @*the user's Picture*@
+        }
+        <hr />
+        <label>Your Email is:</label> @Model.Email <br /> @*the user's Email*@
+
+        @if (Model.DateofBirth.Length > 0) //if the user has entered a date of birth
+        {
+            <label>Your Date of Birth is:</label> @Model.DateofBirth <br /> @*the user's date of birth*@
+        }
+
+        <hr />
+        @using (Html.BeginForm("VehiclesHiredByUser", "Account", FormMethod.Post, new { id = "Hired_Vehicles_Form" }))
+        {
+            <input type="hidden" name="ConnectedUser" value="@Model.UserName" />  @*read the user's UserName*@
+            <input type="submit" value="View the Vehicles You Hired" class="ui-btn" />  //view the user's history of hired vehicles
+            @*upon submitting this form, the UserName will be sent to check what vehicles the user has hired*@
+        }
+    </div>
+</div>
+

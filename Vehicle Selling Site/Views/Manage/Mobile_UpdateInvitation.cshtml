@@ -1,0 +1,76 @@
+﻿@model Vehicle_Selling_Site.Models.HiredVehiclesTable
+@{
+    ViewBag.Title = "Update an Order";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+
+@*this is the page that allows to update orders*@
+<div data-role="page">
+    <div data-role="content">
+        <h2>Update an Order</h2>
+        @using (Html.BeginForm("UpdateInvitation", "Manage", FormMethod.Post))
+        {
+            <div>
+                <img src="@Model.Image" /> <br /> @*the ordered vehicle's image*@
+
+                <input type="hidden" name="VehicleName" value="@Model.HiredVehicleName" /> @*contains the selected order's name, will be sent to the controller to locate the order you chose to update*@
+                @*the following parameters (the vehicle's name, number and the user that hired it) cannot be changed in this page due to the program's logic and are only displayed by labels:*@
+                @Html.LabelFor(model => model.HiredVehicleName, "Name") @Model.HiredVehicleName <br /> @*displays the chosen vehicle's name*@
+
+                @Html.LabelFor(model => model.Hired_By_User, "Hired By") @Model.Hired_By_User <br /> @*displays the username of the user that hired this place*@
+
+                @Html.LabelFor(model => model.Number) @Model.Number <br />  @*displays the vehicle's number*@
+
+                *Note: The Vehicle's Name, Image and Number cannot be changed here <br />
+
+                @************************change the hiring period's start date:*@
+                @Html.LabelFor(model => model.Start_of_Hiring, "Start of Hiring") <br />
+                @Html.TextBoxFor(model => model.Start_of_Hiring, new { id = "HiringStart", type = "date", onchange = "CalculateTotalCost()", required = true }) <br />
+
+                @************************change the hiring period's end date:*@
+                @Html.LabelFor(model => model.End_of_Hiring, "End of Hiring") <br />
+                @Html.TextBoxFor(model => model.End_of_Hiring, new { id = "HiringEnd", type = "date", onchange = "CalculateTotalCost()", required = true }) <br />
+
+                @************************change the daily cost of the order (does NOT affect the vehicle itself! once returned to the garage, the cost will be reverted)*@
+                @Html.LabelFor(model => model.Daily_Cost, "Daily Cost") <br />
+                @Html.TextBoxFor(model => model.Daily_Cost, new { id = "DailyCost", type = "Number", onchange = "CalculateTotalCost()", required = true }) NIS <br />
+
+                @************************change the late cost of the order (does NOT affect the vehicle itself! once returned to the garage, the cost will be reverted)*@
+                @Html.LabelFor(model => model.Late_Cost, "Late Cost") <br />
+                @Html.TextBoxFor(model => model.Late_Cost, new { type = "Number", required = true }) NIS per Day <br />
+
+                @Html.LabelFor(model => model.Total_Cost, "Total Cost") <span id="TotalCost"> @Model.Total_Cost @*the total cost will be displayed here*@ </span> NIS <br />
+                <input type="hidden" id="TotalCostValue" name="TotalCostValue" /> @*defines the order's total cost parameter and will be sent to the controller upon submiting this form*@
+                <input type="submit" id="UpdateButton" class="ui-btn" value="Update" disabled="disabled" />
+            </div>
+        }
+    </div>
+    <script>
+        function CalculateTotalCost() {
+            var oneDay = 24 * 60 * 60 * 1000;    //hours * minutes * seconds * milliseconds in one day
+            //****************************** get the start date of the hiring period as string and convert it to Date format:
+            var HireStart = document.getElementById("HiringStart").value;
+            var StartDate = new Date(HireStart);
+            //******************************** get the end date of the hiring period as string and convert it to Date format:
+            var HireEnd = document.getElementById("HiringEnd").value;
+            var EndDate = new Date(HireEnd);
+            var DailyCost = parseInt(document.getElementById("DailyCost").value)
+            if (HireStart.length > 1 && HireEnd.length > 1) {
+                //************************************  calculate the cost:
+                var CalculateDays = Math.round((EndDate.getTime() - StartDate.getTime()) / (oneDay)); // subtract the start date from the end date to get the difference in days
+                var CalculateTotalCost = CalculateDays * DailyCost; // multiply number of days by the daily cost to calculate the total cost
+                document.getElementById("TotalCost").innerHTML = CalculateTotalCost;// display the total cost in the "TotalCost" span above
+                document.getElementById("TotalCostValue").value = CalculateTotalCost; // set the total cost as the hidden input's value to be able to send it to the controller
+                if (CalculateTotalCost <= 0) { //if the total cost is lower or equal to 0
+                    jQuery("#UpdateButton").prop("disabled", true); //disable the "Update" button
+                    jQuery("[type='submit']").val("Update"); // the button's text will be set to "Update" since the button was losing its text when enabled/disabled
+                }
+                else { // if the total cost is higher than 0
+                    jQuery("#UpdateButton").prop("disabled", false); //enable the "Update" button
+                    jQuery("[type='submit']").val("Update"); // the text will be set to "Update" since the button was losing its text when enabled/disabled
+                }
+            }
+        }
+
+    </script>
+</div>

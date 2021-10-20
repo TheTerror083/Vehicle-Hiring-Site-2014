@@ -1,0 +1,79 @@
+﻿@model Vehicle_Selling_Site.Models.HiredVehiclesTable
+@{
+    ViewBag.Title = "View Hired Vehicles";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+
+@*this page allows the worker to search a hired vehicle by entering a vehicle's number*@
+<div data-role="page">
+    <h2>Search a Hired Vehicle</h2>
+    <div data-role="content">
+        @using (Html.BeginForm("Search_Hired_Vehicle_Number", "Worker", FormMethod.Post))
+        {
+            //************* a label and textbox for searching the ordered vehicle by number:
+            @Html.LabelFor(model => model.Number, "Enter Vehicle's Number: ")
+            @Html.TextBoxFor(model => model.Number);
+            <input type="submit" value="Search" />
+        }
+    </div>
+    <div data-role="content">
+        <input type="hidden" id="CurrentDate" /> @*used to get today's date in the calculations below*@
+        @if (Model != null)
+        {
+            <form method="post" action="ViewHiredVehicles">
+                <input type="hidden" id="StartDate" value="@Model.Start_of_Hiring" /> @*used to get the order's start of hiring period*@
+                <input type="hidden" id="EndDate" value="@Model.End_of_Hiring" /> @*used to get the order's end of hiring period*@
+                <img src="@Model.Image" /> <br />
+                Name: @Model.HiredVehicleName <br />
+                Hired By: @Model.Hired_By_User <br />
+                Start of Hiring: @Model.Start_of_Hiring <br />
+                End of Hiring: @Model.End_of_Hiring <br />
+                Total Cost: @Model.Total_Cost <br />
+                If returned today, the cost will be: <label id="Total_Cost_Until_Today">@*the total cost will be displayed here*@</label> NIS
+                <script>
+                    var Today = new Date()
+                    var Day = Today.getDate() // get today's day
+                    if (Day < 10) {
+                        Day = "0" + Day;
+                    }
+                    var Month = Today.getMonth() + 1 // get today's month, add +1 since january is 0
+                    if (Month < 10) {
+                        Month = "0" + Month;
+                    }
+                    var Year = Today.getFullYear() // get today's year
+                    Today = Month + "/" + Day + "/" + Year
+                    //********** convert Today to a date and set it as the "hidden" input's value:
+                    Today = new Date(Today);
+                    document.getElementById("CurrentDate").innerHTML = Today;
+                    //*************** get the start date of the hiring period as Date:
+                    var StartOfPeriod = new Date(document.getElementById("StartDate").value);
+                    //*************** get the end date of the hiring period as Date:
+                    var EndOfPeriod = new Date(document.getElementById("EndDate").value);
+                    var CostUntilToday = 0;
+                    var oneDay = 24 * 60 * 60 * 1000; // hours * minutes* seconds* miliseconds in one day
+                    //if today's date is bigger than the start date and smaller than the end date (I.E. if the user is not late to return the vehicle):
+                    if (Today > StartOfPeriod && Today <= EndOfPeriod) {
+                        // subtract the start date from today's date to get the difference in days:
+                        var DaysUntilNow = Math.round((Today - StartOfPeriod) / oneDay);
+                        // multiply the number of days by the daily cost:
+                        CostUntilToday = DaysUntilNow * @Model.Daily_Cost;
+                    }
+                        //if today's date is bigger than the end date (I.E. if the user is late to return the vehicle):
+                    else if (Today > EndOfPeriod) {
+                        // subtract the start date from the end date to get the number of days of the hiring period:
+                        var DaysUntilEndOfHiring = Math.round((EndOfPeriod - StartOfPeriod) / oneDay);
+                        //multiply the number of days by the daily cost:
+                        var CostUntilEnd= DaysUntilEndOfHiring * @Model.Daily_Cost;
+                        //subtract the end date from today's date to get the number of late days:
+                        var LateDays= Math.round((Today - EndOfPeriod)/oneDay);
+                        // multiply the number of late days by the late cost and add the cost of the original hiring period
+                        CostUntilToday= (LateDays * @Model.Late_Cost) + CostUntilEnd
+                    }
+                    document.getElementById("Total_Cost_Until_Today").innerHTML=CostUntilToday // display the total cost in the label above
+                </script>
+                <input type="hidden" name="VehicleName" value="@Model.HiredVehicleName" /> <br /> @*used to send the hired vehicle's name to the controller*@
+                <input type="submit" class="ui-btn" value="Return to Garage" />
+            </form>
+        }
+    </div>
+</div>

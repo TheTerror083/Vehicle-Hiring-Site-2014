@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.HiredVehiclesTable>
+@{
+    ViewBag.Title = "Update an Order";
+}
+
+@*this page displays all orders and allows to choose an order to update*@
+<style>
+        .Images{
+        height:200px;
+        width:300px;
+    }
+</style>
+
+<h2>Update an Order</h2>
+
+
+@foreach (Vehicle_Selling_Site.Models.HiredVehiclesTable item in Model) // shows all the orders sent from the controller here
+{
+    <form method="post">
+        <img class="Images" src="@item.Image" /> <br />
+        <label>Name:</label> @item.HiredVehicleName <br />
+        <label>Hired By:</label> @item.Hired_By_User <br />
+        <label>Start of Hiring:</label> @item.Start_of_Hiring <br />
+        <label>End of Hiring:</label> @item.End_of_Hiring <br />
+        <label>Total Cost:</label> @item.Total_Cost <br />
+        <label>Daily Cost:</label> @item.Daily_Cost  NIS <br />
+        <label>Late Cost:</label> @item.Late_Cost NIS Per Day <br />
+        <input type="hidden" name="VehicleName" value="@item.HiredVehicleName" /> @*used to send the ordered vehicle's name to the controller*@
+        <input type="submit" class="btn btn-default" value="Update" />
+    </form>
+    <hr />
+}

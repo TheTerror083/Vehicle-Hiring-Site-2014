@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+@using Microsoft.AspNet.Identity
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Vehicle Hiring Site</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    <style>
+        body{
+            margin-bottom:180px;
+        }
+       #PreviousVehicles li {
+            display: inline;
+            float: left
+        }
+        #PreviouslyViewedText {
+            visibility:hidden
+        }
+        #ClearList{
+            visibility:hidden;
+            cursor:pointer   
+        }
+        #WelcomeLink{
+            cursor:pointer
+        }
+        #LayoutFooter{
+            position: fixed;
+            height:180px;
+            left:0;
+            bottom: 0;
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @*a button to display the navbar as a collapsible in case the window is too small*@
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="WelcomeLink" href="@Url.Action("HomePage", "Home")"  class="navbar-brand">Welcome</a>
+                <span id="LoggedInUserName"></span>
+                @if (Request.IsAuthenticated)
+                {
+                <script>
+                    if (localStorage.getItem("LoggedInUser") != null) { //if a user is logged in, his username will be added to the Welcome link's text in the upper left
+                        document.getElementById("WelcomeLink").innerHTML = "Welcome, " + localStorage.getItem("LoggedInUser");
+                    }
+                </script>
+                }
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "HomePage", "Home")</li> @*the home page*@
+                    <li>@Html.ActionLink("Branches", "Branches", "Home")</li> @* the branches page*@
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li> @*the contact page*@
+                    <li>@Html.ActionLink("Hire a Vehicle", "HireVehicle", "Vehicle")</li>  @*the page that allows to search vehicles for hiring*@
+                    @if (User.Identity.GetUserName() == "Admin") //if the user is an admin
+                    {
+                        <li>@Html.ActionLink("Manager Zone", "ManagerPage", "Manage")</li> //display the manager zone link
+                    }
+                    @if (User.Identity.GetUserName() == "Worker" || User.Identity.GetUserName() == "Admin") // if the user is a worker or an admin
+                    {
+                        <li>@Html.ActionLink("Worker Zone", "WorkerPage", "Worker")</li> // display the worker zone link
+                    }
+                    @*Note: hiding the worker/manager zone links is only for improving the interface,
+            even if the worker/manager zone links would've been displayed, the user could cannot access them without the proper authentication level*@
+                </ul>
+                @Html.Partial("_LoginPartial") @*display the login\logout and register\personal zone links*@
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+            <footer class="panel-footer" id="LayoutFooter">
+                <p>&copy; @DateTime.Now.Year - Vehicle Hiring Site</p>
+                <span id="PreviouslyViewedText">Previously Viewed:</span>
+                <ul id="PreviousVehicles"></ul> @*<----- previously viewed vehicles will be displayed in this list*@
+                <input type="button" class="btn btn-default" value="Clear" id="ClearList" onclick="ClearPreviousVehicles()">
+                <script>
+                    var jq = jQuery.noConflict()
+                    jq(document).ready(
+                        function () {
+                            if (localStorage.getItem("PreviouslyViewed") != null) { //the user has viewed any vehicle
+                                PreviouslyViewedText.style.visibility = "visible";
+                                ClearList.style.visibility = "visible";
+                                var PreviousVehicles = localStorage.getItem("PreviouslyViewed").toString() //get the previous vehicles' names from the local storage
+                                var VehicleList = PreviousVehicles.split(",") // split the names to an array of strings whenever a "," is encountered
+                                for (var i = 0; i < VehicleList.length - 1 ; i++) {
+                                    // since the array will always create one empty slot, the calaculation of the array's lenght is reduced by 1 to avoid null exception
+                                    var vehicle = VehicleList[i] // get the current vehicle's Name
+                                    $.ajax({
+                                        // send the vehicle's Name to the PreviouslyViewedVehicles page thought the VehicleController using a GET function
+                                        type: "GET", url: "/Vehicle/PreviouslyViewedVehicles",
+                                        data: { carName: vehicle } // send the vehicle's Name to the string "carName" in the VehicleController
+                                    })
+                                    .done(function (prt) {
+                                        $("#PreviousVehicles").append("<li>" + prt + "</li>"); //add the partial view to the "ul"
+                                    })
+                                }
+                            }
+                        })
+                    function ClearPreviousVehicles() {
+                        localStorage.removeItem("PreviouslyViewed"); // remove all the previously viewed vehicles' names from the local storage
+                        jq("#PreviousVehicles").empty(); // remove all previously viewed vehicles from the list
+                        PreviouslyViewedText.style.visibility = "hidden"; //hide the "Previously Viewed" text
+                        ClearList.style.visibility = "hidden"; // hide the "Clear" button 
+                    }
+                </script>
+            </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

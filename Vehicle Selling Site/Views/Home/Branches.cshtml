@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Branches";
+}
+<head>
+    <title></title>
+    <script>
+        var j = jQuery.noConflict(); // used to make sure the jquery code will execute even if it encounters an error
+        j(document).ready(function () {
+            j("#BranchAccordion").accordion() // set the specific div as an accordion using jquery
+        });
+    </script>
+</head>
+<body>
+    @* the company's branches will be displayed in this page inside an accordion *@
+    <h3>Branches</h3>
+    <div id="BranchAccordion">
+        <h2>Petach Tikva</h2>
+        <div>
+            Address: Haatzmaut 11 <br /> @*the branch's address*@ 
+            Latitude:32.0754058   <br /> @*the branch's latitude*@ 
+            Longtitude:34.8789589        @*the branch's longtitude*@ 
+        </div>
+        <h2>Tel Aviv</h2>
+        <div>
+            Address: Homa ve Migdal 29 <br />
+            Latitude:32.06547 <br />
+            Longtitude:34.78662
+        </div>
+    </div>
+</body>
+

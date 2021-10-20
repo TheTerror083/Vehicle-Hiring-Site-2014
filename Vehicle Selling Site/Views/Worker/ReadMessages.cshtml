@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.ContactTable>
+@{
+    ViewBag.Title = "Read Messages";
+}
+<script>
+    var jav = jQuery.noConflict();
+    jav(document).ready(function () {
+        jav("#MessageAccordion").accordion(); // display the messages in an accordion
+    })
+</script>
+<h2>Read Messages</h2>
+<div id="MessageAccordion">
+    @*messages will be displayed in an accordion, each in a seperate div, with the subject being the title*@
+@foreach (Vehicle_Selling_Site.Models.ContactTable message in Model)
+{
+    <h1>@message.Subject</h1>
+    <div>
+        <form method="post">
+            @message.Message
+            <hr />
+            <input type="hidden" name="MessageID" value="@message.Message_ID" /> @*used to identify the message by id when sent to the controller*@
+            <input type="submit" class="btn btn-default" value="Delete" />
+        </form>
+    </div>
+}
+    </div>
+

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.HiredVehiclesTable>
+@{
+    ViewBag.Title = "Remove an Order";
+}
+@*orders can be removed in this page*@
+<style>
+        .Images{
+        height:200px;
+        width:300px;
+    }
+</style>
+
+<h2>Remove an Order</h2>
+
+
+@foreach (Vehicle_Selling_Site.Models.HiredVehiclesTable item in Model) //load each order sent from the controller and display its parameters:
+{
+    <form method="post">
+        <img  class="Images" src="@item.Image" /> <br />
+        <label>Name:</label> @item.HiredVehicleName <br />
+        <label>Hired By:</label> @item.Hired_By_User <br />
+        <label>Start of Hiring:</label> @item.Start_of_Hiring <br />
+        <label>End of Hiring:</label> @item.End_of_Hiring <br />
+        <label>Total Cost:</label> @item.Total_Cost <br />
+        <input type="hidden" name="VehicleName" value="@item.HiredVehicleName" /> @*used to send the Hired Vehicle's Name to the controller*@
+        <input type="submit" class="btn btn-default" value="Remove" />
+    </form>
+    <hr />
+}
+Note: upon removing an order, the ordered vehicle will be returned to the garage automatically
+
+
+

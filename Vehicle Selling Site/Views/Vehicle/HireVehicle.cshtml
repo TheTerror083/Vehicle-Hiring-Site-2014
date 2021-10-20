@@ -1,0 +1,88 @@
+﻿@using Vehicle_Selling_Site.Models
+@model Vehicle_Selling_Site.Models.VehicleAndTypeClass
+ @{
+   ViewBag.Title = "Hire a Vehicle";
+ }
+<script>
+    //attach datepickers to the StartDate and EndDate of the search boxes:
+    var j = jQuery.noConflict(); // used to make sure th code will execute even if it encounters an error
+        j(document).ready(function () {
+            j(".HireDates").datepicker();
+        });
+</script>
+
+<style>
+    .Images{
+        height:200px;
+        width:300px;
+    }
+    #ListOfVehicles{
+        list-style-type:none
+    }
+</style>
+
+<h2>Hire a Vehicle</h2>
+
+<h1>Choose a Vehicle from the list:</h1>
+ @******************* Search Attributes*@
+@using (Html.BeginForm("HireVehicleSearch", "Vehicle", FormMethod.Post))
+    {
+    <div>
+Search:
+<input type="text" name="SearchText" /> @*a free text to search*@
+
+Vehicle Type:
+<select name="VehicleType"> @*search by vehicle type*@
+    <option value="Any">Any</option>
+    @foreach (VehicleTypeTable item in Model.LoadVehicleTypes) //load each vehicle type sent from the controller and display it in a DropDownList:
+    {
+        <option value="@item.VehicleType">@item.VehicleType</option>
+    }
+</select>
+
+Year:
+<input type="number" name="SearchYear" /> @*search by year*@
+
+Transmission:
+<select name="TransmissionType"> @*search by transmission*@
+    <option value="Any">Any</option>
+    <option value="Automatic">Automatic</option>
+    <option value="Manual">Manual</option>
+</select>
+<br />
+@***********************search by date range:*@
+Start Date: <input type="text" name="StartDate" class="HireDates" /> 
+End Date: <input type="text" name="EndDate" class="HireDates" />
+<input type="submit" class="btn btn-default" value="Search" />
+<hr />
+        </div>
+}
+
+@Html.ValidationSummary("", true) @*if no results were found, a message will be displayed here*@
+
+@******************* Vehicles*@
+<ol id="ListOfVehicles">
+    @foreach (VehicleTable item in Model.LoadVehicles) //load each vehicle sent from the controller and display its parameters:
+    {
+        <li>
+                @using (Html.BeginForm("HireVehicle", "Vehicle", FormMethod.Post))
+                { 
+                <img src="@item.Image" class="Images" /> <br />
+                <label>Name:</label> @item.Name <br />
+                <label>Model:</label>  @item.Model <br />
+                <label>Number:</label>   @item.Number <br />
+                <label>Transmission:</label>    @item.Transmission <br />
+                <label>Year:</label>  @item.Year <br />
+                <label>Manufacturer:</label>   @item.Manufacturer <br />
+                <label>Available Between:</label>   @item.Hiring_Period_Start <label>To</label> @item.Hiring_Period_End <br />
+                <label>Fixed:</label>  @item.Fixed_for_Hire <br />
+                <label>Daily Cost:</label>  @item.Daily_Cost <span>NIS</span> <br />
+                <label>Late Cost:</label>  @item.Late_Cost <span>NIS per Day </span><br />
+                <label>Branch:</label>  @item.Branch  <br />
+                <input type="hidden" name="carName" value="@item.Name" /> @*used to send the selected vehicle's name to the controller*@
+                <input type="submit" class="btn btn-default" value="Hire" />
+                <hr />
+                }
+        </li>
+    }
+</ol>

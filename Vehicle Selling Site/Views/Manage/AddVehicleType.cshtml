@@ -1,0 +1,17 @@
+﻿@model Vehicle_Selling_Site.Models.VehicleTypeTable
+@{
+    ViewBag.Title = "Add a Vehicle Type";
+}
+
+@*new vehicle types can be created using this page*@
+
+<h2>Add a Vehicle Type</h2>
+
+<form method="post">
+    @Html.ValidationSummary(true, "an Error has occured:", new { @class = "text-danger" }); @*any errors occured will be displayed here*@
+    @********************************** a label and a textbox to write the vehicle type's name:*@
+    @Html.LabelFor(model => model.VehicleType, "Enter a name for the new Vehicle Type") <br />
+    @Html.TextBoxFor(model => model.VehicleType, new { required=true }) <br />
+    <input type="submit" class="btn btn-default" value="Create" />
+</form>
+

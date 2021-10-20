@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Thanks for Hiring";
+    Layout = null;
+}
+
+<div data-role="page">
+    @*the user will be redirected to this page after hiring a vehicle*@
+
+
+    <h2>Thank you for Hiring this Vehicle! have a nice drive!</h2> <br />
+    <h2>Redirecting to Home page....</h2>
+    <script>
+        //redirect the user to the Home Controller's default page i.e the HomePage after 2 seconds:
+        setTimeout(function () {
+            window.location.href = "/Home"
+        }, 2000);
+    </script>
+</div>

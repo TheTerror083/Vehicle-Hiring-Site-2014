@@ -1,0 +1,94 @@
+﻿@model Vehicle_Selling_Site.Models.UserTable
+@{
+    ViewBag.Title = "Edit a User";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+
+<div data-role="page">
+    @*users can be edited in this page*@
+    <style>
+        #UserPhoto {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+
+    <h2>Update a User</h2>
+    <div data-role="content">
+        <label>Selected User:</label> @Model.UserName <br />
+        <img id="UserPhoto" src="@Model.Photo" />
+
+        <hr />
+        @using (Html.BeginForm("UpdateUser", "Manage", FormMethod.Post, new { enctype = "multipart/form-data", @data_ajax = "false" }))
+        {
+            @Html.ValidationSummary(true, "an Error has occured:", new { @class = "text-danger" }); //any errors occured will be displayed here
+            <div class="form-horizontal">
+                <input type="hidden" name="ChosenUser" value="@Model.UserName" /> @*used to send the selected user's username to the controller*@
+                @*************************** label and texbox for the user's Name:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Name, new { required = true })
+                </div>
+                @*************************** label and texbox for the user's Password:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Password, new { required = true })
+                </div>
+                @*************************** label and texbox for the user's Email:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Email)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Email, new { required = true, type = "email" })
+                </div>
+                @*************************** label and texbox for the user's UserName:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.UserName, new { required = true })
+                </div>
+                @*************************** label and radio buttons for the user's Gender:*@
+                <fieldset data-role="controlgroup">
+                    @*the user's gender will be chosen here with 2 radiobuttons*@
+                    <legend>Gender</legend>
+                    <input type="radio" name="Gender" id="Male" value="Male" checked="checked" /> @*radio button for the Male option, checked by default*@
+                    <label for="Male">Male</label>
+
+                    <input type="radio" name="Gender" id="Female" value="Female" /> @*radio button for the Female option*@
+                    <label for="Female">Female</label>
+                </fieldset>
+                @*************************** label and texbox for the user's Date of birth:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DateofBirth, "Date of Birth")
+                </div>
+                <div class="editor-field-not-required">
+                    @Html.TextBoxFor(model => model.DateofBirth, new { type = "date", id = "DateofBirth" })
+                </div>
+                @*************************** label and DropDownList for the user's Type: (only availbale for managers)*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Type, "User Type")
+                </div>
+                <div class="editor-field">
+                    <select name="UserType">
+                        <option value="User">Regular User</option>
+                        <option value="Worker">Worker</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                @*************************** label and button to uplaod a photo to the user's profile:*@
+                <label for="photo">Photo:</label>
+                @*Note: while the field is not required and the database accepts a null entrance for the photo, if the no photo has been uploaded,*@
+                @*a "NoImage" photo from the "Images" folder will be attached to the user's profile (the chosen image depends on the user's Gender) to improve the interface*@
+                <input type="file" name="photo" id="photo" accept="image/*" />
+                <input type="submit" class="ui-btn" value="Finish" />
+            </div>
+        }
+    </div>
+</div>
+
+

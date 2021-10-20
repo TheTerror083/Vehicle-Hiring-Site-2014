@@ -1,0 +1,166 @@
+﻿@model Vehicle_Selling_Site.Models.VehicleTable
+@{
+    ViewBag.Title = "Confirm Hiring";
+}
+<h2>Confirm Hiring</h2>
+<script>
+    var j = jQuery.noConflict();
+    j(document).ready(function () {
+        j("#HiringStart").datepicker();
+    }
+);
+</script>
+<style>
+    #VehicleImage{
+        height:400px;
+        width:700px;
+    }
+</style>
+@using (Html.BeginForm("ConfirmHiring", "Vehicle", FormMethod.Post, new { id="HiringForm" }))
+{
+    <div>
+        <input type="hidden" id="MaxDate" value="@Model.Hiring_Period_End" />
+        <input type="hidden" id="MinDate" value="@Model.Hiring_Period_Start" />
+        <img id="VehicleImage" src="@Model.Image" /> <br />
+        <label>Name:</label> @Model.Name <br />
+        <label>Model:</label>  @Model.Model <br />
+        <label>Number:</label>   @Model.Number <br />
+        <label>Transmission:</label>    @Model.Transmission <br />
+        <label>Year:</label>  @Model.Year <br />
+        <label>Manufacturer:</label>  @Model.Manufacturer <br />
+        <label>Hiring Period:</label> <br />
+        <label>From:</label>
+        <input type="text" id="HiringStart" name="HiringStart" onchange="Calculate()" />
+        <label>For</label>
+        <input type="number" id="HiringEnd" name="HiringEnd" onchange="Calculate()" /> Days <br />
+        <label>Fixed:</label>  @Model.Fixed_for_Hire <br />
+        <label>Daily Cost:</label>  @Model.Daily_Cost NIS <br />
+        <label>Late Cost:</label>  @Model.Late_Cost NIS per Day <br />
+        <label>Branch:</label>  @Model.Branch  <br />
+        <label>Total Cost:</label> <span id="TotalCost"></span> NIS <br /> @*the total cost will be displayed here (calculations below)*@
+        <input type="hidden" name="HiringEndDate" id="HiringEndDate" />
+        <input type="hidden" id="TotalCostValue" name="TotalCostValue" />
+        <input type="hidden" name="carName" id="carName" value="@Model.Name" />
+        @if (Request.IsAuthenticated)
+        {
+            <input type="hidden" name="HiringUser" id="HiringUser" />
+            <script>
+                var GetConnectedUser = localStorage.getItem("LoggedInUser");
+                document.getElementById("HiringUser").value = GetConnectedUser;
+            </script>
+        }
+        @if (Model.Available_for_Hire == false) // in case the vehicle is unavailable
+        {
+            <style>
+                #Vehicle_Unavailable {
+                    color: red;
+                }
+            </style>
+            <h1 id="Vehicle_Unavailable">This Vehicle is currently Unavailable for Hiring!</h1> //this text will be displayed instead of the Hire button
+            <script> // and the Hiring Period text boxes will be disabled
+                document.getElementById("HiringStart").disabled=true;
+                document.getElementById("HiringEnd").disabled=true;
+            </script>
+        }
+        else // if the vehicle is available the Hire button will appear
+        {
+            <input type="submit" id="HireButton" class="btn btn-default" value="Hire" disabled="disabled" />
+        }
+    </div>
+    <script>
+        function Calculate(){
+            var oneDay = 24 * 60 * 60 * 1000;    //hours * minutes * seconds * milliseconds in one day
+            //***************************** get the maximum available date of hiring as string and convert it to Date format
+            var GetEndPeriod= document.getElementById("MaxDate").value
+            var CompareToEndPeriod= new Date(GetEndPeriod)
+            //***************************** get the minimum available date of hiring as string and convert it to Date format
+            var GetStartPeriod= document.getElementById("MinDate").value
+            var CompareToStartPeriod= new Date(GetStartPeriod)
+            //****************************** get the start date of the entered hiring period as string and convert it to Date format:
+            var HireStart = document.getElementById("HiringStart").value;
+            var StartDate = new Date(HireStart);
+            //******************************** get the number of days of the hiring period as string and convert it to int
+            var GetDays = document.getElementById("HiringEnd").value;
+            var NumberofDays = parseInt(GetDays);
+
+            if (StartDate < CompareToStartPeriod || StartDate > CompareToEndPeriod) {
+                StartDate = CompareToStartPeriod;
+                var day= StartDate.getDate()
+                // if the day or month of the date are smaller than 10, a 0 will be added in the begining to match the datepicker's output:
+                if (day < 10) {
+                    day = "0" + day
+                }
+                var month= StartDate.getMonth()+1
+                if (month < 10) {
+                    month = "0" + month
+                }
+                //display the results on the date box:
+                document.getElementById("HiringStart").value = month + "/" + day + "/" + StartDate.getFullYear()
+            }
+
+            var EndDate= new Date(HireStart);
+            //************************** the number of entered days will be added to the start date to generate the end date of the hiring period
+            EndDate.setDate(StartDate.getDate() + NumberofDays);
+            if (EndDate != null) { // if the end date has been successfully generated
+                var User_Entered_More_Days = false;
+                if (EndDate > CompareToEndPeriod) { //in case the entered days exceed the maximum date
+                    EndDate = CompareToEndPeriod;  // the number of days will be set to the maximum days that can be entered
+                    User_Entered_More_Days = true;
+                }
+                // if the day or month of the date are smaller than 10, a 0 will be added in the begining to match the datepicker's output:
+                var day= EndDate.getDate()
+                if (day < 10) {
+                    day = "0" + day
+                }
+                var month= EndDate.getMonth()+1
+                if (month < 10) {
+                    month = "0" + month
+                }
+                //set Hiring period's end date as the "hidden" input's value:
+                document.getElementById("HiringEndDate").value = month + "/" + day + "/" + EndDate.getFullYear();
+            }
+            if (HireStart.length > 0 && GetDays.length > 0) {
+                //**********************************************  calculate the cost:
+                var CalculateDays = Math.round((EndDate.getTime() - StartDate.getTime()) / (oneDay)); // subtract the start date from the end date to get the difference in days
+                if (User_Entered_More_Days == true) {     // in case the user has entered more days than availble
+                    document.getElementById("HiringEnd").value = CalculateDays; //the number of days will be set to the maximum availble
+                }
+
+                var CalculateTotalCost = CalculateDays * @Model.Daily_Cost; // multiply number of days by the daily cost to calculate the total cost
+                document.getElementById("TotalCost").innerHTML = CalculateTotalCost ;// display the total cost in the "TotalCost" span above
+                document.getElementById("TotalCostValue").value=CalculateTotalCost;
+
+                if (CalculateTotalCost <= 0) { //if the total cost is equal or lower than 0 the Hire button will be disabled
+                    document.getElementById("HireButton").disabled=true;
+                }
+                if (CalculateTotalCost >0 && document.getElementById("HireButton").disabled==true) {
+                    //if the total cost is higher than 0 the Hire button will be enabled
+                    document.getElementById("HireButton").disabled=false;
+                }
+            }
+        }
+
+
+        //*********************************************************** Add this Vehicle to the Previously Viewed Vehicles list
+        var ThisVehicle= document.getElementById("carName").value;
+
+        if (localStorage.getItem("PreviouslyViewed") == null) { // if the user hasn't viewed any vehicles before
+            localStorage.PreviouslyViewed = ThisVehicle + ","; // create a local storage item that contains the Name of this vehicle with a "," at the end
+        }
+        else { // if the user has viewed vehicles before
+            var PreviousVehicles= localStorage.getItem("PreviouslyViewed").toString(); // get the current values (Names) from the local storage
+            var VehicleList= PreviousVehicles.split(",") // split the Names to an array of strings each time a "," is encountered
+            var VehicleExists = false;
+            for (var i = 0; i < VehicleList.length; i++) { // check if this vehicle's Name already exists in the local storage
+                if (VehicleList[i] == ThisVehicle) {
+                    VehicleExists=true   // if the vehicle's Name already exists in the local storage, it will NOT be added again
+                    break;
+                }
+            }
+            if (VehicleExists==false) {
+                localStorage.PreviouslyViewed += ThisVehicle + ","; //if this vehicle's Name does not exist in the local storage,
+                //add it to the local storage with a "," at the end to sign the end of the vehicle's Name
+            }
+        }
+    </script>
+}

@@ -1,0 +1,24 @@
+﻿@model Vehicle_Selling_Site.Models.VehicleTable
+           @*in case the previous vehicle was not found in the databse this partial view will be empty*@
+@if (Model != null)
+ {
+           <style>
+               .ViewVehicle{
+                   height:100px;
+                   width:150px;
+                   overflow-x:hidden;
+                   overflow-y:hidden;
+               }
+               .VehicleImage{
+                   height:70px;
+                   width:100px;
+               }
+           </style>
+<div class="ViewVehicle">
+    <form method="post" id="@Model.Name" action="~/Vehicle/PreviouslyViewedVehicles_Redirect">
+            <input type="image" class="VehicleImage" src="@Model.Image" /> <br /> @*the vehcile's image, the form will be submitted upon clicking on it*@
+            <span> @Model.Name </span> @*the vehicle's name*@
+            <input type="hidden" id="VehicleName" name="Redirect_To_Vehicle" value="@Model.Name" /> @*contains the vehicle's name, used to redirect to the vehicle's hiring page upon submitting the form*@
+    </form>
+</div>
+ }

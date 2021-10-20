@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Worker Page";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+@*this is the worker's zone*@
+<div data-role="page">
+    <div data-role="content">
+        <h2>Worker Zone</h2>
+
+        Hello Worker, what would you like to do? <br />
+
+        @Html.ActionLink("View Messages", "ReadMessages") <br />@*leads to the page that displays all messages*@
+
+        @Html.ActionLink("View Ordered Vehicles", "ViewHiredVehicles") @*leads to the page that allows searching for a hired vehicle*@
+
+    </div>
+</div>
+

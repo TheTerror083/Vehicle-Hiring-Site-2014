@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.VehicleTable>
+@{
+    ViewBag.Title = "Edit a Vehicle";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+
+@*this page displays a list of all vehicles and allows to choose one vehicle to update*@
+<div data-role="page">
+    <style>
+        .Images {
+            height: 200px;
+            width: 300px;
+        }
+
+        #List {
+            list-style-type: none;
+        }
+    </style>
+
+    <div data-role="content">
+        <h2>Edit a Vehicle</h2>
+        <ol id="List">
+            @foreach (Vehicle_Selling_Site.Models.VehicleTable item in Model) //load each vehicle sent from the controller and display its parameters
+            {
+                <li>
+                    <form method="post">
+                        <img src="@item.Image" class="Images" /> <br />
+                        <label>Name:</label> @item.Name <br />
+                        <label>Model:</label>  @item.Model <br />
+                        <label>Number:</label>   @item.Number <br />
+                        <label>Transmission:</label>    @item.Transmission <br />
+                        <label>Year:</label>  @item.Year <br />
+                        <label>Manufacturer:</label>   @item.Manufacturer <br />
+                        <label>Hiring Period:</label>   @item.Hiring_Period_Start <label>To</label> @item.Hiring_Period_End <br />
+                        <label>Fixed:</label>  @item.Fixed_for_Hire <br />
+                        <label>Daily Cost:</label>  @item.Daily_Cost NIS <br />
+                        <label>Late Cost:</label>  @item.Late_Cost NIS per Day <br />
+                        <label>Type:</label> @item.Vehicle_Type <br />
+                        <label>Branch:</label>  @item.Branch  <br />
+                        <label>Available:</label>  @item.Available_for_Hire  <br />
+                        <input type="hidden" name="SelectedVehicle" value="@item.Name" /> @*used to send the selected vehicle's name to the contrller*@
+                        <input type="submit" class="ui-btn" value="Update" />
+                        <hr />
+                    </form>
+                </li>
+            }
+        </ol>
+    </div>
+</div>
+

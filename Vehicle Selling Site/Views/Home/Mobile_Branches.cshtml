@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Branches";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+<div data-role="page">
+    <div data-role="content">
+        <h2>Branches</h2>
+        @* the company's branches will be displayed in this page inside an accordion *@
+        <div data-role="collapsible">
+            <h2>Petach Tikva</h2>
+            Address: Haatzmaut 11 <br /> @*the branch's address*@
+            Latitude:32.0754058   <br /> @*the branch's latitude*@
+            Longtitude:34.8789589        @*the branch's longtitude*@
+        </div>
+
+        <div data-role="collapsible">
+            <h2>Tel Aviv</h2>
+            Address: Homa ve Migdal 29 <br />
+            Latitude:32.06547 <br />
+            Longtitude:34.78662
+        </div>
+    </div>
+    </div>

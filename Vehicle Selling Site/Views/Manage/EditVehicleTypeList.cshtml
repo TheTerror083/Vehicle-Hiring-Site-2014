@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.VehicleTypeTable>
+@{
+    ViewBag.Title = "Edit Vehicle Type";
+}
+
+@*this page displays a list of all vehicle types and allows to choose one type to update*@
+
+<h2>Edit a Vehicle Type</h2> 
+
+<form method="post">
+    <label>Select a Vehicle Type: </label>
+    @*the selected type will be sent to the controller upon submition*@
+    <select name="SelectedType"> 
+        @foreach (Vehicle_Selling_Site.Models.VehicleTypeTable item in Model) //read each vehicle type sent from the controller and display it in a DropDownList
+        {
+            <option value="@item.VehicleType">@item.VehicleType</option>
+        }
+    </select>
+    <input type="submit" class="btn btn-default" value="Edit" />
+</form>

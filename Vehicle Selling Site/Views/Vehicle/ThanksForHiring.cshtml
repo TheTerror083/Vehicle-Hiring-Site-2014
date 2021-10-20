@@ -1,0 +1,24 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+@*the user will be redirected to this page after hiring a vehicle*@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thanks for Hiring</title>
+</head>
+<body>
+    <h2>Thank you for Hiring this Vehicle! have a nice drive!</h2> <br />
+    <h2>Redirecting to Home page....</h2>
+    <script>
+        //redirect the user to the Home Controller's default page i.e the HomePage after 2 seconds:
+        setTimeout(function () {
+            window.location.href = "/Home"
+        }, 2000);
+    </script>
+</body>
+</html>

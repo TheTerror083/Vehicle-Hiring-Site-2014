@@ -1,0 +1,151 @@
+﻿@model Vehicle_Selling_Site.Models.AddVehicleClass
+
+@{
+    ViewBag.Title = "Add New Vehicle";
+}
+
+@*new vehicles can be added using this page*@
+
+<h2>Add New Vehicle</h2>
+
+<head>
+    <title></title>
+
+    <script>
+        // attach datepickers to the textboxes that define the hiring period's start and end dates:
+        // (doing it with a class caused the datepickers to appear constantly so i've done it by id instead)
+        var j = jQuery.noConflict(); //used to make sure the code will execute even if it encounters an error
+        j(document).ready(function () {
+            j("#StartDate").datepicker();
+            j("#EndDate").datepicker();
+        }
+   );
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm("AddNewVehicle", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true, "an Error has occured:", new { @class = "text-danger" }); //any errors occured will be displayed here
+        <div class="form-horizontal">
+            @******************************** a label and textbox for the vehicle's Name:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Name, new { required = true })
+            </div>
+            @******************************** a label and textbox for the vehicle's Manufacturer:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Manufacturer)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Manufacturer, new { required = true })
+            </div>
+            @******************************** a label and textbox for the vehicle's Model:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Model)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Model, new { required = true })
+            </div>
+            @******************************** a label and textbox for the vehicle's Number:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Number)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Number, new { required = true })
+            </div>
+            @******************************** a label and textbox for the vehicle's Mileage:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Mileage)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Mileage, new {type = "Number" , required = true })
+            </div>
+            @******************************** a label and DropDownList for the vehicle's Transmission:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Transmission)
+            </div>
+            <div class="editor-field">
+                <select name="Transmission">
+                    <option value="Automatic">Automatic</option>
+                    <option value="Manual">Manual</option>
+                </select>
+            </div>
+            @******************************** a label and textbox for the vehicle's Year of creation:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Year)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Year, new { type = "Number", required = true })
+            </div>
+            @******************************** a label and textbox for the availability period's start date: (defines the minimal date the users can choose in order to hire this vehicle)*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Hiring_Period_Start, "Availability Period")
+            </div>
+            <div class="editor-field-date">
+                @Html.TextBoxFor(model => model.Hiring_Period_Start, new { required = true, id = "StartDate" })
+
+                 To 
+            @******************************** a label and textbox for the availability period's end date: (defines the maximal date the users can choose in order to hire this vehicle)*@
+                @Html.TextBoxFor(model => model.Hiring_Period_End, new { required = true , id="EndDate"})
+            </div>
+            @******************************** a label and radiobuttons for the vehicle's Avalability for hiring:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Available_for_Hire,"Available for Hire")
+            </div>
+            <div class="editor-field">
+                @Html.RadioButtonFor(model => model.Available_for_Hire,"True", new { required = true }) Yes @*vehicle will be available upon adding it to the database*@ 
+                @*Note: the "Yes" option is marked as required to define the Availability field as "required" and does not force the manager to choose the "Yes" option*@
+                @Html.RadioButtonFor(model => model.Available_for_Hire, "False") No @*vehicle will not be available*@
+            </div>
+            @******************************** a label and radiobuttons for the vehicle's fixed for hiring field:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Fixed_for_Hire, "Fixed for Hire")
+            </div>
+            <div class="editor-field">
+                @Html.RadioButtonFor(model => model.Fixed_for_Hire, "True", new { required = true }) Yes
+                @Html.RadioButtonFor(model => model.Fixed_for_Hire, "False") No
+            </div>
+            @******************************** a label and textbox for the branch vehicle's located in:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Branch)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Branch, new { required = true })
+            </div>
+            @******************************** a label and textbox for the vehicle's daily cost:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Daily_Cost,"Daily Cost")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Daily_Cost, new { type="Number", required = true }) ILS
+            </div>
+            @******************************** a label and textbox for the vehicle's late cost:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Late_Cost,"Late Cost")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Late_Cost, new { type = "Number", required = true }) ILS per Day
+            </div>
+            @******************************** a label and DropDownList for the vehicle's Type:*@
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Vehicle_Type, "Vehicle Type")
+            </div>
+            <select name="VehicleType">
+            @foreach (Vehicle_Selling_Site.Models.VehicleTypeTable item in Model.VehicleTypes)
+            {
+                // each vehicle type sent from the controller will be displayed as an option in this DropDownList
+                <option value="@item.VehicleType">@item.VehicleType</option>
+            }
+            </select> <br />
+            @******************************** a label and button to upload an image of the vehicle:*@
+            <label for="photo">Image</label>
+            <input type="file" name="photo" id="photo" required accept="image/*" />
+            <div>
+                <input type="submit" class="btn btn-default" value="Finish" />
+            </div>
+        </div>
+    }
+</body>
+

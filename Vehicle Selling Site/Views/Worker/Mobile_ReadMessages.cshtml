@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.ContactTable>
+@{
+    ViewBag.Title = "Read Messages";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+<div data-role="page">
+    <div data-role="content">
+        <h2>Read Messages</h2>
+        @*messages will be displayed in an accordion, each in a seperate div, with the subject being the title*@
+        @foreach (Vehicle_Selling_Site.Models.ContactTable message in Model)
+        {
+            <div data-role="collapsible">
+                <h1>@message.Subject</h1>
+
+                <form method="post">
+                    @message.Message
+                    <hr />
+                    <input type="hidden" name="MessageID" value="@message.Message_ID" /> @*used to identify the message by id when sent to the controller*@
+                    <input type="submit" class="ui-btn" value="Delete" />
+                </form>
+            </div>
+        }
+    </div>
+</div>

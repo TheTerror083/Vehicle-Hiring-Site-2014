@@ -1,0 +1,23 @@
+﻿@model Vehicle_Selling_Site.Models.ContactTable
+@{
+    ViewBag.Title = "Contact";
+}
+
+<h2>Contact Us</h2>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div class="form-group">
+            Subject: <br />
+            @******************a textbox for the subject:*@
+            @Html.TextBoxFor(model => model.Subject, new { name = "Subject", style = "width:400px;" })
+            <hr />
+            Message: <br />
+            @***********************a textarea for the message:*@
+            @Html.TextAreaFor(model => model.Message, new { name = "Message", style = "width:400px; height:300px;" })
+            <br />
+            <br />
+        </div>
+    <input type="submit" class="btn btn-default" value="Send" />
+    }
+</body>

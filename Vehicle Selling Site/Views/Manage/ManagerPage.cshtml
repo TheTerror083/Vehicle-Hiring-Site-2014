@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Manager Zone";
+}
+
+@*this is the manager's zone*@
+
+<h2>Manager Zone</h2>
+
+ Hello Manager, what would you like to do?
+<hr />
+
+            <h4>Vehicles:</h4>
+
+            @Html.ActionLink("Add a New Vehicle", "AddNewVehicle") <br /> @*Leads to the page that adds new vehicles*@ 
+
+
+            @Html.ActionLink("Edit Vehicle", "UpdateVehicleList") <br /> @*Leads to the page that shows all existing vehicles and allows to choose one vehicle to update it*@ 
+
+
+            @Html.ActionLink("Remove a Vehicle", "RemoveVehicle") <br /> @*Leads to the page that allows to remove vehicles*@ 
+
+            <h4>Vehicle Types:</h4>
+
+            @Html.ActionLink("Add a new Vehicle Type", "AddVehicleType") <br /> @*Leads to the page that adds new vehicle types*@ 
+
+
+            @Html.ActionLink("Edit a Vehicle Type", "EditVehicleTypeList") <br /> @*Leads to the page that shows all existing vehicle types and allows to choose one vehicle type to update it*@ 
+
+
+            @Html.ActionLink("Remove a Vehicle Type", "RemoveVehicleType") <br />  @*Leads to the page that allows to remove vehicle types*@ 
+
+
+            <h4>Users:</h4>
+
+            @Html.ActionLink("Add a New User", "ManagerRegistration") <br /> @*Leads to the page that allows the manager to register a new user*@ 
+
+
+            @Html.ActionLink("Edit a User", "UpdateUserList") <br /> @*Leads to the page that shows all existing users and allows to choose one user to update it*@
+
+
+            @Html.ActionLink("Remove a User", "RemoveUser") <br /> @*Leads to the page that allows to remove users*@ 
+
+            <h4>Messages:</h4>
+
+            @Html.ActionLink("View Messages", "ReadMessages", "Worker") <br />  @*Leads to the page that shows all messages*@ 
+
+            <h4>Orders:</h4>
+
+            @Html.ActionLink("Remove an Order", "RemoveInvitation") <br /> @*Leads to the page that shows all of the currently hired vehicles and allows to choose one order to remove*@
+
+
+            @Html.ActionLink("Update an Order", "UpdateInvitationList") @*Leads to the page that shows all of the currently hired vehicles and allows to choose one order to update*@

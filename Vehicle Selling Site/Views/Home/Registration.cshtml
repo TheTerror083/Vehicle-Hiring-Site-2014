@@ -1,0 +1,69 @@
+﻿@model Vehicle_Selling_Site.Models.UserTable
+    <h2>Registration</h2>
+<head>
+    <title></title>
+
+    <script>
+        //attach a datepicker to the Date of birth box:
+        var j = jQuery.noConflict(); // used to make sure th code will execute even if it encounters an error
+        j(document).ready(function () {
+            j("#DateofBirth").datepicker();
+        }
+   );
+    </script>
+</head>
+<body>
+        @using (Html.BeginForm("Registration", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+            @Html.ValidationSummary(true, "The following Errors have occured:", new { @class = "text-danger" }); //any errors will be displayed here
+            <div class="form-horizontal">
+                @****************************a label and textbox for the user's Name:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Name, new { required = true })
+                </div>
+                @****************************a label and textbox for the user's Password:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Password, new {type="password", required = true })
+                </div>
+                @****************************a label and textbox for the user's Email:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Email)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Email, new { required = true, type = "email" })
+                </div>
+                @****************************a label and textbox for the user's UserName:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.UserName, new { required = true })
+                </div>
+                @***************************** 2 radiobuttons for the user's gender*@
+                <div class="editor-field">
+                    @Html.RadioButtonFor(model => model.Gender, "Male", new { required = true }) Male @*male option*@
+                    @*Note: the male option is marked as required to define the Gender field as "required" and does not force the user to choose the "male" option*@
+                    @Html.RadioButtonFor(model => model.Gender, "Female") Female @*female option*@
+                </div>
+                @****************************a label and textbox for the user's Date of Birth:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DateofBirth, "Date of Birth")
+                </div>
+                <div class="editor-field-not-required">
+                    @Html.TextBoxFor(model => model.DateofBirth)
+                </div>
+                @*************************** label and button to uplaod a photo to the user's profile:*@
+                <label for="photo">Photo:</label>
+                @*Note: while the field is not required and the database accepts a null entrance for the photo, if the no photo has been uploaded,*@
+                @*a "NoImage" photo from the "Images" folder will be attached to the user's profile (the chosen image depends on the user's Gender) to improve the interface*@
+                <input type="file" name="photo" id="photo" accept="image/*" />
+                <input type="submit" class="btn btn-default" value="Register" />
+                </div>
+    }
+</body>

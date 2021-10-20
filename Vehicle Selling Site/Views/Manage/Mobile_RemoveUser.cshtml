@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.UserTable>
+@{
+    ViewBag.Title = "Remove a User";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+
+@*users can be removed in this page*@
+<div data-role="page">
+    <style>
+        #UserList {
+            list-style-type: none;
+        }
+
+        .Images {
+            height: 200px;
+            width: 200px;
+        }
+    </style>
+
+    <div data-role="content">
+        <h2>Remove a User</h2>
+        <ol id="UserList">
+            @Html.ValidationSummary(true, "an Error has occured:", new { @class = "text-danger" }); @*any erros occured will be displayed here*@
+            @foreach (Vehicle_Selling_Site.Models.UserTable item in Model) //load each user sent from the controller and display its parameters:
+            {
+                <li>
+                    <form method="post" id="UserForm">
+                        <img class="Images" src="@item.Photo" /> <br />
+                        <label>Name:</label> @item.Name <br />
+                        <label>UserName:</label> @item.UserName <br />
+                        <label>Password:</label> @item.Password <br />
+                        <label>Email:</label> @item.Email <br />
+                        <label>Date of Birth:</label> @item.DateofBirth <br />
+                        <label>Gender:</label> @item.Gender <br />
+                        <label>User Type:</label> @item.Type <br />
+                        <input type="hidden" name="Username" value="@item.UserName" /> @*used to send the user's UserName to the controller upon submition*@
+                        <input type="hidden" name="AdminName" id="LoggedInAdmin" /> @*used to send the logged in Admin's UserName to the controller*@
+                        <input type="submit" class="ui-btn" value="Remove" />
+                        <hr />
+                    </form>
+                </li>
+            }
+        </ol>
+        Note: removing a user will NOT return the vehicles he hired to the garage. they must be returned manually
+    </div>
+    <script>
+        var GetAdminName = localStorage.getItem("LoggedInUser"); //get the logged in Admin's UserName from the local storage
+        jQuery("input[name='AdminName']").val(GetAdminName); //send it to all "hidden" inputs named "AdminName" in all forms
+    </script>
+</div>
+

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.VehicleTable>
+@{
+    ViewBag.Title = "Remove a Vehicle";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+
+
+@*vehicles can be removed in this page*@
+<div data-role="page">
+    <style>
+        #VehicleList {
+            list-style-type: none;
+        }
+
+        .Images {
+            height: 200px;
+            width: 300px;
+        }
+    </style>
+
+    <div data-role="content">
+        <h2>Remove a Vehicle</h2>
+
+        <ul id="VehicleList">
+            @Html.ValidationSummary(true, "an Error has occured:", new { @class = "text-danger" }); @*any erros occured will be displayed here*@
+            @foreach (Vehicle_Selling_Site.Models.VehicleTable item in Model) //load each vehicle sent from the controller and display its parameters:
+            {
+                <li>
+                    <form method="post">
+                        <img class="Images" src="@item.Image" /> <br />
+                        <label>Name:</label> @item.Name <br />
+                        <label>Model:</label>  @item.Model <br />
+                        <label>Number:</label>   @item.Number <br />
+                        <label>Transmission:</label>    @item.Transmission <br />
+                        <label>Year:</label>  @item.Year <br />
+                        <label>Manufacturer:</label>   @item.Manufacturer <br />
+                        <label>Hiring Period:</label>   @item.Hiring_Period_Start <label>To</label> @item.Hiring_Period_End <br />
+                        <label>Fixed:</label>  @item.Fixed_for_Hire <br />
+                        <label>Daily Cost:</label>  @item.Daily_Cost NIS <br />
+                        <label>Late Cost:</label>  @item.Late_Cost NIS per Day <br />
+                        <label>Branch:</label>  @item.Branch  <br />
+                        <label>Available:</label>  @item.Available_for_Hire  <br />
+                        <input type="hidden" name="carName" value="@item.Name" />
+                        @if (item.Available_for_Hire == false) //if the vehicle isn't available for hiring
+                        {
+                            //the following text will be displayed:
+                            <label>Note:</label>
+                            <span>
+                                This Vehicle has been Hired by a User, to remove it you must first
+                                remove the vehicle from the list of Orders
+                            </span> <br />
+                        }
+                        else //if the vehicle is available for hiring
+                        {
+                            <input type="submit" class="ui-btn" value="Remove"> // the submit (Remove) button will appear
+                        }
+                        <hr />
+                    </form>
+
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Vehicle_Selling_Site.Models.Hired_Vehicles_History>
+@{
+    ViewBag.Title = "Hired Vehicles History";
+}
+
+<style>
+    .Images{
+        width:400px;
+        height:300px;
+    }
+</style>
+
+<h2>List of Vehicles You Hired:</h2>
+@* any vehicles previously hired by this user (including currently hired ones) will be displayed here *@
+@foreach (Vehicle_Selling_Site.Models.Hired_Vehicles_History item in Model)
+{
+    <div>
+        <img src="@item.Image" class="Images" /> <br />
+        <label>Name:</label> @item.Name <br />
+        <label>Number:</label> @item.Number <br />
+        <label>Hired Between:</label> @item.Start_of_Hiring 
+        <label> To </label>
+        @item.End_of_Hiring <br />
+        <label>Daily Cost:</label> @item.Daily_Cost NIS <br />
+        <label>Total Cost:</label> @item.Total_Cost NIS
+        <hr />
+    </div>
+}
+

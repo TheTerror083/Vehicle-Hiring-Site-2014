@@ -1,0 +1,67 @@
+﻿@model Vehicle_Selling_Site.Models.UserTable
+@{
+    ViewBag.Title = "Mobile_Registration";
+    Layout = "~/Views/Shared/Mobile_Layout.cshtml";
+}
+
+<div data-role="page">
+    <h2>Registration</h2>
+    <div data-role="content">
+        @using (Html.BeginForm("Registration", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @data_ajax = "false" }))
+        {
+            @Html.ValidationSummary(true, "The following Errors have occured:", new { @class = "text-danger" });
+            <div class="form-horizontal">
+                @****************************a label and textbox for the user's Name:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Name, new { required = true })
+                </div>
+                @****************************a label and textbox for the user's Password:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Password, new { type = "password", required = true })
+                </div>
+                @****************************a label and textbox for the user's Email:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Email)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Email, new { required = true, type = "email" })
+                </div>
+                @****************************a label and textbox for the user's UserName:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.UserName, new { required = true })
+                </div>
+                <fieldset data-role="controlgroup">
+                    @*the user's gender will be chosen here with 2 radiobuttons*@
+                    <legend>Gender</legend>
+                    <input type="radio" name="Gender" id="Male" value="Male" checked="checked" /> @*radio button for the Male option, checked by default*@
+                    <label for="Male">Male</label>
+
+                    <input type="radio" name="Gender" id="Female" value="Female" /> @*radio button for the Female option*@
+                    <label for="Female">Female</label>
+                </fieldset>
+                @****************************a label and textbox for the user's Date of Birth:*@
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DateofBirth, "Date of Birth")
+                </div>
+                <div class="editor-field-not-required">
+                    @Html.TextBoxFor(model => model.DateofBirth, new { type = "date" })
+                </div>
+                @*************************** label and button to uplaod a photo to the user's profile:*@
+                <label for="photo">Photo:</label>
+                @*Note: while the field is not required and the database accepts a null entrance for the photo, if the no photo has been uploaded,*@
+                @*a "NoImage" photo from the "Images" folder will be attached to the user's profile (the chosen image depends on the user's Gender) to improve the interface*@
+                <input type="file" name="photo" id="photo" accept="image/*" />
+                <input type="submit" class="ui-btn" value="Register" />
+            </div>
+        }
+    </div>
+</div>

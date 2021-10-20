@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNet.Identity
+<script>
+    function UserLoggingOut() { //when the user logs out
+        localStorage.removeItem("LoggedInUser"); //his username will be removed from the local storage
+        document.getElementById("LogoutForm").submit();// log the user out by submitting the logout form (below)
+    }
+    function EnterUserZone() { //if the user enters the personal zone
+        var GetUserName = localStorage.getItem("LoggedInUser");  //read the user's username from the local storage
+        document.getElementById("ConnectedUserName").value = GetUserName; // set the "hidden" input's value as the user's username
+        document.getElementById("UserZoneForm").submit(); // send the username from the "hidden" input to the controller when
+    }
+</script>
+<style>
+    .LoggedInLinks{
+        cursor:pointer;
+    }
+</style>
+
+@if (Request.IsAuthenticated) //if a user is connected
+{ 
+    // the logout form:
+        using (Html.BeginForm("LogOut", "Account", FormMethod.Post, new { id = "LogoutForm", @class = "navbar-right" }))
+        {
+        @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li><a class="LoggedInLinks" onclick="EnterUserZone()">Personal Zone</a></li>  @*personal zone link*@
+        <li><a class="LoggedInLinks" onclick="UserLoggingOut()">Log out</a></li> @*log out link*@
+    </ul>
+        }
+        
+        //personal zone form:
+    using (Html.BeginForm("UserZone", "Account", FormMethod.Post, new { id = "UserZoneForm"}))
+        {
+            <input type="hidden" name="ConnectedUserName" id="ConnectedUserName"/> 
+        }
+}
+else //if there's no user connected
+{
+    <ul class="nav navbar-nav navbar-right">
+        @*registration link:*@
+        <li id="RegisterLink">@Html.ActionLink("Register", "Registration", "Home", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        @*log in link:*@
+        <li id="LogInLink">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
+

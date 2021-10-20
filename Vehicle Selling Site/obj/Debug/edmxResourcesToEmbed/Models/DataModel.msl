@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SiteDatabaseModelStoreContainer" CdmEntityContainer="SiteDatabaseEntities">
+    <EntitySetMapping Name="ContactTables">
+      <EntityTypeMapping TypeName="SiteDatabaseModel.ContactTable">
+        <MappingFragment StoreEntitySet="ContactTable">
+          <ScalarProperty Name="Message_ID" ColumnName="Message_ID" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HiredVehiclesTables">
+      <EntityTypeMapping TypeName="SiteDatabaseModel.HiredVehiclesTable">
+        <MappingFragment StoreEntitySet="HiredVehiclesTable">
+          <ScalarProperty Name="Hired_By_User" ColumnName="Hired_By_User" />
+          <ScalarProperty Name="HiredVehicleName" ColumnName="HiredVehicleName" />
+          <ScalarProperty Name="Start_of_Hiring" ColumnName="Start_of_Hiring" />
+          <ScalarProperty Name="End_of_Hiring" ColumnName="End_of_Hiring" />
+          <ScalarProperty Name="Total_Cost" ColumnName="Total_Cost" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Daily_Cost" ColumnName="Daily_Cost" />
+          <ScalarProperty Name="Late_Cost" ColumnName="Late_Cost" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTables">
+      <EntityTypeMapping TypeName="SiteDatabaseModel.UserTable">
+        <MappingFragment StoreEntitySet="UserTable">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleTables">
+      <EntityTypeMapping TypeName="SiteDatabaseModel.VehicleTable">
+        <MappingFragment StoreEntitySet="VehicleTable">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Mileage" ColumnName="Mileage" />
+          <ScalarProperty Name="Transmission" ColumnName="Transmission" />
+          <ScalarProperty Name="Available_for_Hire" ColumnName="Available_for_Hire" />
+          <ScalarProperty Name="Fixed_for_Hire" ColumnName="Fixed_for_Hire" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="Branch" ColumnName="Branch" />
+          <ScalarProperty Name="Hiring_Period_Start" ColumnName="Hiring_Period_Start" />
+          <ScalarProperty Name="Hiring_Period_End" ColumnName="Hiring_Period_End" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+          <ScalarProperty Name="Daily_Cost" ColumnName="Daily_Cost" />
+          <ScalarProperty Name="Late_Cost" ColumnName="Late_Cost" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Vehicle_Type" ColumnName="Vehicle_Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleTypeTables">
+      <EntityTypeMapping TypeName="SiteDatabaseModel.VehicleTypeTable">
+        <MappingFragment StoreEntitySet="VehicleTypeTable">
+          <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Hired_Vehicles_History">
+      <EntityTypeMapping TypeName="SiteDatabaseModel.Hired_Vehicles_History">
+        <MappingFragment StoreEntitySet="Hired_Vehicles_History">
+          <ScalarProperty Name="Total_Cost" ColumnName="Total_Cost" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Daily_Cost" ColumnName="Daily_Cost" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="End_of_Hiring" ColumnName="End_of_Hiring" />
+          <ScalarProperty Name="Start_of_Hiring" ColumnName="Start_of_Hiring" />
+          <ScalarProperty Name="Hired_By_User" ColumnName="Hired_By_User" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
